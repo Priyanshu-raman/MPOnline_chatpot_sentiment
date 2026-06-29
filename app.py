@@ -5,6 +5,10 @@ import joblib
 import re
 import os
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_DIR = os.path.join(BASE_DIR, "models")
+STATIC_DIR = BASE_DIR
+
 app = FastAPI(title="Sentiment Chatbot API")
 
 # Attempt to load the model on startup
@@ -14,10 +18,24 @@ vectorizer = None
 def load_models():
     global model, vectorizer
     try:
-        if os.path.exists('models/sentiment_model.pkl') and os.path.exists('models/tfidf_vectorizer.pkl'):
-            model = joblib.load('models/sentiment_model.pkl')
-            vectorizer = joblib.load('models/tfidf_vectorizer.pkl')
+        model_candidates = [
+            os.path.join(MODEL_DIR, "sentiment_model.pkl"),
+            os.path.join(BASE_DIR, "sentiment_model.pkl"),
+        ]
+        vectorizer_candidates = [
+            os.path.join(MODEL_DIR, "tfidf_vectorizer.pkl"),
+            os.path.join(BASE_DIR, "tfidf_vectorizer.pkl"),
+        ]
+
+        model_path = next((path for path in model_candidates if os.path.exists(path)), None)
+        vectorizer_path = next((path for path in vectorizer_candidates if os.path.exists(path)), None)
+
+        if model_path and vectorizer_path:
+            model = joblib.load(model_path)
+            vectorizer = joblib.load(vectorizer_path)
             print("Models loaded successfully.")
+        else:
+            print("Model files were not found. Place them in the project root or in the models folder.")
     except Exception as e:
         print(f"Error loading models: {e}")
 
@@ -63,8 +81,8 @@ def chat_endpoint(request: MessageRequest):
         "bot_response": bot_response
     }
 
-os.makedirs("static", exist_ok=True)
-app.mount("/", StaticFiles(directory="static", html=True), name="static")
+os.makedirs(MODEL_DIR, exist_ok=True)
+app.mount("/", StaticFiles(directory=STATIC_DIR, html=True), name="static")
 
 if __name__ == "__main__":
     import uvicorn

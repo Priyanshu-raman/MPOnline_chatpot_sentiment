@@ -6,6 +6,9 @@ from sklearn.linear_model import LogisticRegression
 from datasets import load_dataset
 import os
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_DIR = os.path.join(BASE_DIR, "models")
+
 def clean_text(text):
     text = re.sub(r"http\S+|www\S+|https\S+", '', text, flags=re.MULTILINE)
     text = re.sub(r'\@\w+|\#', '', text)
@@ -41,10 +44,10 @@ def main():
     model.fit(X_vec, y)
     
     print("Saving model and vectorizer...")
-    os.makedirs('models', exist_ok=True)
-    joblib.dump(model, 'models/sentiment_model.pkl')
-    joblib.dump(vectorizer, 'models/tfidf_vectorizer.pkl')
-    print("Training complete. Models saved to 'models/' directory.")
+    os.makedirs(MODEL_DIR, exist_ok=True)
+    joblib.dump(model, os.path.join(MODEL_DIR, 'sentiment_model.pkl'))
+    joblib.dump(vectorizer, os.path.join(MODEL_DIR, 'tfidf_vectorizer.pkl'))
+    print("Training complete. Models saved to the project models directory.")
 
 if __name__ == "__main__":
     main()
