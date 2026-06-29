@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SentimentBot | AI Chat</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="glass-panel">
+            <div class="header-content">
+                <div class="avatar">
+                    <span class="bot-icon">🤖</span>
+                </div>
+                <div class="header-info">
+                    <h1>SentimentBot</h1>
+                    <p class="status">Online & Ready</p>
+                </div>
+            </div>
+        </header>
+
+        <main class="chat-container glass-panel" id="chat-container">
+            <div class="message bot-message fade-in">
+                <div class="avatar-small">🤖</div>
+                <div class="message-bubble">
+                    <p>Hello! I'm SentimentBot. I use advanced NLP trained on the Sentiment140 dataset to analyze the emotion behind your text. Say something to me!</p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="input-area glass-panel">
+            <form id="chat-form">
+                <input type="text" id="user-input" placeholder="Type a message..." autocomplete="off" required>
+                <button type="submit" id="send-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                </button>
+            </form>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
